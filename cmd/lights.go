@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"text/tabwriter"
 
@@ -46,7 +47,7 @@ func runListLightsCmd() error {
 	fmt.Fprintln(tw, "ID\tNAME\tON\tREACHABLE\tBRIGHTNESS (%)\tHUE")
 
 	for _, light := range lights {
-		bri := float64(light.State.Bri) / 254 * 100
+		bri := math.Round(float64(light.State.Bri) / 254 * 100)
 
 		fmt.Fprintf(tw, "%s\t%s\t%t\t%t\t%d\t%d\n", light.ID, light.Name, light.State.On, light.State.Reachable, int(bri), light.State.Hue)
 	}

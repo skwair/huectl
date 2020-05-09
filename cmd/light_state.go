@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"math"
 	"os"
 
 	"github.com/skwair/harmony/optional"
@@ -58,8 +59,8 @@ func runSetLightStateCmd(cmd *cobra.Command, args []string, flags *setLightState
 		}
 
 		if cmd.Flags().Changed("bri") {
-			bri := 254 / 100 * flags.Brightness
-			req.Bri = optional.NewInt(bri)
+			bri := math.Round(254.0 / 100.0 * float64(flags.Brightness))
+			req.Bri = optional.NewInt(int(bri))
 		}
 
 		if cmd.Flags().Changed("hue") {
