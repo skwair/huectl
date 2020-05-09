@@ -1,0 +1,44 @@
+project_name: huectl
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - id: default
+    binary: huectl
+    ldflags:
+      - -s -w -X github.com/skwair/huectl/cmd.version={{.Version}} -X github.com/skwair/huectl/cmd.commit={{.Commit}} -X github.com/skwair/huectl/cmd.date={{.Date}} -X main.builtBy=goreleaser
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    ignore:
+      - goos: darwin
+        goarch: 386
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - id: default
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  skip: true
